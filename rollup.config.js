@@ -38,7 +38,9 @@ export default {
       preventAssignment: true, // 防止直接赋值警告
     }),
     peerDepsExternal(),
-    resolve(),
+    resolve({
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    }),
     commonjs(),
     postcss({
       modules: true, // 开启 CSS Modules
