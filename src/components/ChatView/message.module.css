@@ -1,0 +1,29 @@
+.message {
+  display: flex;
+  margin:  8px 0;
+}
+.messageUser {
+  margin: 0 8px;
+  width: 36px;
+  padding-top: 6px;
+}
+.messageContent {
+  max-width: calc(100% - 120px);
+}
+.messageText {
+  word-wrap: break-word;
+  background-color: rgba(84, 152, 243, .08);
+  padding: 8px;
+  border-radius: 4px;
+}
+.messageTime {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #888;
+}
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}

@@ -5,7 +5,8 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import { terser } from 'rollup-plugin-terser'
 import replace from '@rollup/plugin-replace'
 import postcss from 'rollup-plugin-postcss'
-
+import alias from '@rollup/plugin-alias'
+import path from 'path'
 const packageJson = require('./package.json')
 
 export default {
@@ -32,23 +33,39 @@ export default {
       // },
     },
   ],
+  context: 'window',
   plugins: [
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'), // 替换为生产环境
+      'use client': '',
       preventAssignment: true, // 防止直接赋值警告
     }),
     peerDepsExternal(),
-    resolve(),
+    alias({
+      entries: [
+        {
+          find: '@components',
+          replacement: path.resolve(__dirname, 'src/components'),
+        },
+        { find: '@', replacement: path.resolve(__dirname, 'src') },
+      ],
+    }),
+    resolve({
+      extensions: ['.js', '.jsx'],
+    }),
     commonjs(),
     postcss({
       modules: true, // 开启 CSS Modules
-      extract: false, // 将 CSS 分离为独立文件
+      extract: true, // 将 CSS 分离为独立文件
       minimize: true, // 压缩 CSS
       sourceMap: false,
     }),
     babel({
       exclude: 'node_modules/**',
-      presets: ['@babel/preset-react', '@babel/preset-env'],
+      presets: [
+        ['@babel/preset-react', { runtime: 'automatic' }],
+        '@babel/preset-env',
+      ],
       plugins: ['@babel/plugin-transform-runtime'], // 添加插件
       babelHelpers: 'runtime',
     }),

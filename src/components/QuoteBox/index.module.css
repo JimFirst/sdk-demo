@@ -1,0 +1,13 @@
+.quote {
+  font-size: 12px;
+  background-color: #e2dfdf;
+  color: #333;
+  padding: 4px;
+  border-radius: 4px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  word-break: break-all;
+  word-wrap: break-word;
+}

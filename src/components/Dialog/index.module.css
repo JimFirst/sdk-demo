@@ -1,0 +1,22 @@
+.dialog {
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+  width: 360px;
+  height: 480px;
+  opacity: 0;
+  animation: slideIn 0.3s ease-out forwards;
+  box-shadow: 0 4px 20px rgba(60, 69, 118, 0.2);
+  border-radius: 12px;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translate(20%, 0);
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
