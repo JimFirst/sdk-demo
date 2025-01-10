@@ -20,13 +20,16 @@ legend,
 img {
   margin: 0;
   padding: 0;
+
   &:focus {
     outline: unset;
   }
 }
+
 div:focus {
   outline: unset;
 }
+
 fieldset,
 img,
 input,
@@ -40,7 +43,8 @@ button {
 
 ul,
 ol {
-  list-style: none; /*清除列表风格*/
+  list-style: none;
+  /*清除列表风格*/
 }
 
 input {
@@ -71,5 +75,23 @@ img {
 }
 
 table {
-  border-collapse: collapse; /*合并外边线*/
+  border-collapse: collapse;
+  /*合并外边线*/
+}
+
+/*定义整个滚动条高宽及背景：高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+/*定义滚动条轨道：内阴影+圆角*/
+::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+/*定义滑块：内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #999;
 }

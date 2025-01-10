@@ -55,10 +55,14 @@ export default {
     }),
     commonjs(),
     postcss({
-      modules: true, // 开启 CSS Modules
-      extract: true, // 将 CSS 分离为独立文件
+      extract: true, // 提取到同一个文件
       minimize: true, // 压缩 CSS
-      sourceMap: false,
+      sourceMap: true,
+      modules: {
+        // 启用 CSS Modules，仅针对 `.module.css` 文件
+        generateScopedName: '[name]__[local]___[hash:base64:5]',
+        auto: filename => filename.endsWith('.module.css'), // 自动匹配规则
+      },
     }),
     babel({
       exclude: 'node_modules/**',

@@ -1,6 +1,14 @@
 .chatBox {
   padding: 8px;
 }
+
+.multileBox {
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  height: 48px;
+}
+
 .sup {
   display: flex;
   align-items: center;

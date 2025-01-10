@@ -8,6 +8,10 @@ export default function ChatBox({
   className = '',
   quote,
   setQuote,
+  multile,
+  setMultile,
+  multileChecked = [],
+  setMultileChecked,
 }) {
   const [value, setValue] = useState('')
 
@@ -23,7 +27,27 @@ export default function ChatBox({
     setQuote(null)
     setValue('')
   }
-  return (
+  function cancleMultile() {
+    setMultile(false)
+    setMultileChecked([])
+  }
+  function transpond() {
+    setMultile(false)
+    console.log(multileChecked)
+    // setMultileChecked([])
+  }
+  return multile ? (
+    <div
+      className={
+        className ? `${styles.multileBox} ${className}` : styles.multileBox
+      }
+    >
+      <Space>
+        <div onClick={transpond}>转发</div>
+        <div onClick={cancleMultile}>取消</div>
+      </Space>
+    </div>
+  ) : (
     <div
       className={className ? `${styles.chatBox} ${className}` : styles.chatBox}
       style={style}

@@ -1,76 +1,124 @@
 import styles from './message.module.css'
 import QuoteBox from '../QuoteBox'
-import { Image } from 'antd'
-const TextMessage = ({ message, onContextMenu }) => {
+import { Image, Rate } from 'antd'
+const BaseMessage = ({ message = {}, onContextMenu, children, quote }) => {
+  const { user } = message
   return (
-    <div className={styles.messageText} onContextMenu={onContextMenu}>
-      {message}
+    <>
+      <div className={styles.messageUser}>
+        <img className={styles.avatar} src={user?.avatar} />
+      </div>
+      <div className={styles.messageContent} onContextMenu={onContextMenu}>
+        {children}
+        <QuoteBox data={quote} />
+      </div>
+    </>
+  )
+}
+const TextMessage = ({ message, onContextMenu, quote }) => {
+  return (
+    <BaseMessage onContextMenu={onContextMenu} message={message} quote={quote}>
+      <div className={styles.messageText}>{message.text}</div>
+    </BaseMessage>
+  )
+}
+const ImageMessage = ({ message, onContextMenu, quote }) => {
+  return (
+    <BaseMessage onContextMenu={onContextMenu} message={message} quote={quote}>
+      <Image width={200} src={message.text} />
+    </BaseMessage>
+  )
+}
+const FileMessage = ({ message, onContextMenu, quote }) => {
+  return (
+    <BaseMessage onContextMenu={onContextMenu} message={message} quote={quote}>
+      <div className={styles.messageText}>
+        <a
+          href={message.text}
+          download
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          下载文件
+        </a>
+      </div>
+    </BaseMessage>
+  )
+}
+const VideoMessage = ({ message, onContextMenu, quote }) => {
+  return (
+    <BaseMessage onContextMenu={onContextMenu} message={message} quote={quote}>
+      <video src={message.text} controls></video>
+    </BaseMessage>
+  )
+}
+const RateMessage = ({ message }) => {
+  return (
+    <div className={styles.messageRate}>
+      <Rate></Rate>
     </div>
   )
 }
-const ImageMessage = ({ message, onContextMenu }) => {
-  return (
-    <div onContextMenu={onContextMenu}>
-      <Image width={200} src={message} />
-    </div>
-  )
-}
-const FileMessage = ({ message, onContextMenu }) => {
-  return (
-    <div className={styles.messageText} onContextMenu={onContextMenu}>
-      <a href={message} download target="_blank" rel="noopener noreferrer">
-        下载文件
-      </a>
-    </div>
-  )
-}
-const VideoMessage = ({ message, onContextMenu }) => {
-  return (
-    <div className={styles.messageText} onContextMenu={onContextMenu}>
-      <video src={message} controls></video>
-    </div>
-  )
-}
-
-export default function Message({ message, isReverse, onContextMenu }) {
-  const { user, quote } = message
+export default function Message({
+  message,
+  isReverse,
+  onContextMenu,
+  style = {},
+}) {
+  const { quote } = message
   // TODO：支持图片、文件、视频等消息类型
   function getMessageContent(message) {
     switch (message.type) {
       case 'text':
         return (
-          <TextMessage message={message.text} onContextMenu={onContextMenu} />
+          <TextMessage
+            message={message}
+            onContextMenu={onContextMenu}
+            quote={quote}
+          />
         )
       case 'image':
         return (
-          <ImageMessage message={message.text} onContextMenu={onContextMenu} />
+          <ImageMessage
+            message={message}
+            onContextMenu={onContextMenu}
+            quote={quote}
+          />
         )
       case 'file':
         return (
-          <FileMessage message={message.text} onContextMenu={onContextMenu} />
+          <FileMessage
+            message={message}
+            onContextMenu={onContextMenu}
+            quote={quote}
+          />
         )
       case 'video':
         return (
-          <VideoMessage message={message.text} onContextMenu={onContextMenu} />
+          <VideoMessage
+            message={message}
+            onContextMenu={onContextMenu}
+            quote={quote}
+          />
         )
+      case 'rate':
+        return <RateMessage message={message} />
       default:
         return (
-          <TextMessage message={message.text} onContextMenu={onContextMenu} />
+          <TextMessage
+            message={message}
+            onContextMenu={onContextMenu}
+            quote={quote}
+          />
         )
     }
   }
   return (
     <div
       className={styles.message}
-      style={{ flexDirection: isReverse ? 'row-reverse' : 'row' }}
+      style={{ flexDirection: isReverse ? 'row-reverse' : 'row', ...style }}
     >
-      <div className={styles.messageUser}>
-        <img className={styles.avatar} src={user.avatar} />
-      </div>
-      <div className={styles.messageContent}>
-        {getMessageContent(message)}
-        <QuoteBox data={quote} />
-      </div>
+      {getMessageContent(message)}
     </div>
   )
 }
