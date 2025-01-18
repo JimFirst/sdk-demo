@@ -18,14 +18,14 @@ const BaseMessage = ({ message = {}, onContextMenu, children, quote }) => {
 const TextMessage = ({ message, onContextMenu, quote }) => {
   return (
     <BaseMessage onContextMenu={onContextMenu} message={message} quote={quote}>
-      <div className={styles.messageText}>{message.text}</div>
+      <div className={styles.messageText}>{message.content}</div>
     </BaseMessage>
   )
 }
 const ImageMessage = ({ message, onContextMenu, quote }) => {
   return (
     <BaseMessage onContextMenu={onContextMenu} message={message} quote={quote}>
-      <Image width={200} src={message.text} />
+      <Image width={200} src={message.content} />
     </BaseMessage>
   )
 }
@@ -34,7 +34,7 @@ const FileMessage = ({ message, onContextMenu, quote }) => {
     <BaseMessage onContextMenu={onContextMenu} message={message} quote={quote}>
       <div className={styles.messageText}>
         <a
-          href={message.text}
+          href={message.content}
           download
           target="_blank"
           rel="noopener noreferrer"
@@ -48,7 +48,7 @@ const FileMessage = ({ message, onContextMenu, quote }) => {
 const VideoMessage = ({ message, onContextMenu, quote }) => {
   return (
     <BaseMessage onContextMenu={onContextMenu} message={message} quote={quote}>
-      <video src={message.text} controls></video>
+      <video src={message.content} controls></video>
     </BaseMessage>
   )
 }

@@ -2,6 +2,7 @@ import Message from './Message'
 import styles from './index.module.css'
 import { useContextMenu } from 'react-contexify'
 import { Checkbox, Watermark } from 'antd'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
 // interface Message {
 //   id: number
 //   text: string
@@ -13,15 +14,18 @@ import { Checkbox, Watermark } from 'antd'
 //     avatar: string
 //   }
 // }
-export default function ChatView({
-  multile = false,
-  multileChecked = [],
-  setMultileChecked,
-  messages = [],
-  menuId,
-  style = {},
-  className = '',
-}) {
+function ChatView(
+  {
+    multile = false,
+    multileChecked = [],
+    setMultileChecked,
+    messages = [],
+    menuId,
+    style = {},
+    className = '',
+  },
+  ref,
+) {
   const { show } = useContextMenu({
     id: menuId,
   })
@@ -34,10 +38,24 @@ export default function ChatView({
       },
     })
   }
+  useImperativeHandle(ref, () => {
+    return {
+      scrollToBottom,
+    }
+  })
+  const chatRef = useRef(null)
+  function scrollToBottom() {
+    const element = chatRef.current
+    if (element) {
+      element.scrollTo(0, element.scrollHeight)
+    }
+  }
+
   return (
     <div
       style={{ ...style, overflow: 'auto' }}
       className={className ? `${styles.box} ${className}` : styles.box}
+      ref={chatRef}
     >
       <Watermark content="天健">
         <Checkbox.Group
@@ -67,3 +85,4 @@ export default function ChatView({
     </div>
   )
 }
+export default forwardRef(ChatView)

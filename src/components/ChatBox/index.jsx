@@ -3,6 +3,7 @@ import EmoticonPicker from './EmoticonPicker'
 import { useState } from 'react'
 import styles from './index.module.css'
 import QuoteBox from '../QuoteBox'
+import useWs from '@/hooks/useWs'
 export default function ChatBox({
   style = {},
   className = '',
@@ -12,6 +13,9 @@ export default function ChatBox({
   setMultile,
   multileChecked = [],
   setMultileChecked,
+  chatViewRef,
+  messages,
+  setMessages,
 }) {
   const [value, setValue] = useState('')
 
@@ -20,12 +24,22 @@ export default function ChatBox({
       value + String.fromCodePoint(parseInt(item.code.replace('U+', ''), 16)),
     )
   }
-
+  // const ws = useWs('/channel/chat/1')
   function onSend() {
     if (value.trim() === '') return
-    console.log(value)
     setQuote(null)
+    const message = {
+      type: 'chat',
+      receiver: '2',
+      content: value.trim(),
+      id: new Date().getTime(),
+    }
+    // ws.send(message)
+    setMessages([...messages, message])
     setValue('')
+    setTimeout(() => {
+      chatViewRef.current?.scrollToBottom()
+    }, 0)
   }
   function cancleMultile() {
     setMultile(false)

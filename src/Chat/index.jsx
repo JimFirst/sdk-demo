@@ -1,20 +1,23 @@
 import { Dialog, ChatBox, ChatView } from '@/components'
 import styles from './index.module.css'
-import { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { useState, useEffect, useRef } from 'react'
+import { Button, Modal } from 'antd'
 import 'react-contexify/dist/ReactContexify.css'
 import { Menu, Item } from 'react-contexify'
 const MENU_ID = 'rightMenu'
 import useOperation from './useOperation'
-export default function App() {
+import dropUpload from './dropUpload.js'
+
+export default function Chat() {
   useEffect(() => {
     getMessageContent()
   }, [])
+
   function getMessageContent() {}
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: 'Hello, world!',
+      content: 'Hello, world!',
       user: {
         name: 'Alice',
         avatar:
@@ -23,7 +26,8 @@ export default function App() {
       type: 'text',
       time: '2021-08-10 10:00:00',
       quote: {
-        text: 'I am a quote. How are you? I am fine, thank you. And you?',
+        content:
+          'I am a quote. How are you? I am fine, thank you. And you? https://www.baidu.com',
         user: {
           name: 'Bob',
           avatar:
@@ -33,7 +37,7 @@ export default function App() {
     },
     {
       id: 2,
-      text: 'How are you? I am fine, thank you. And you?',
+      content: 'How are you? I am fine, thank you. And you?',
       type: 'text',
       time: '2021-08-10 10:00:00',
       user: {
@@ -44,7 +48,8 @@ export default function App() {
     },
     {
       id: 3,
-      text: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      content:
+        'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       type: 'file',
       time: '2021-08-10 10:00:00',
       user: {
@@ -55,7 +60,8 @@ export default function App() {
     },
     {
       id: 4,
-      text: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      content:
+        'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       type: 'image',
       time: '2021-08-10 10:00:00',
       user: {
@@ -66,7 +72,8 @@ export default function App() {
     },
     {
       id: 5,
-      text: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      content:
+        'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       type: 'image',
       time: '2021-08-10 10:00:00',
       user: {
@@ -77,7 +84,8 @@ export default function App() {
     },
     {
       id: 6,
-      text: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      content:
+        'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       type: 'rate',
       time: '2021-08-10 10:00:00',
     },
@@ -95,6 +103,16 @@ export default function App() {
     multile,
     setMultile,
   } = useOperation()
+
+  const chatRef = useRef('')
+  const chatViewRef = useRef('')
+  const [modal, contextHolder] = Modal.useModal()
+
+  useEffect(() => {
+    if (visible) {
+      dropUpload(chatRef.current, modal)
+    }
+  }, [visible])
   return (
     <>
       <div className={styles.button}>
@@ -111,8 +129,10 @@ export default function App() {
         <div
           className={styles.container}
           onContextMenu={e => e.preventDefault()}
+          ref={chatRef}
         >
           <ChatView
+            ref={chatViewRef}
             style={{ flex: 1 }}
             multile={multile}
             messages={messages}
@@ -127,8 +147,12 @@ export default function App() {
             setMultile={setMultile}
             multileChecked={multileChecked}
             setMultileChecked={setMultileChecked}
+            chatViewRef={chatViewRef}
+            messages={messages}
+            setMessages={setMessages}
           />
         </div>
+        {contextHolder}
       </Dialog>
     </>
   )

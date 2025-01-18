@@ -8,12 +8,12 @@ export default function useOperation() {
   }
   function copyMessage(e) {
     // TODO: 实现文件、图片复制功能
-    copy(e.props.text)
+    copy(e.props.content)
   }
   const [quote, setQuote] = useState(null)
   function quoteMessage(e) {
     const { props } = e
-    setQuote({ text: props.text, user: props.user })
+    setQuote({ content: props.content, user: props.user })
     console.log('引用', e)
   }
   function revokeMessage(e) {

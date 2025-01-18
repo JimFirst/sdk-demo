@@ -6,7 +6,7 @@ export default function QuoteBox({ data, setData }) {
       <div className={styles.quote}>
         <div>
           <span>{data.user.name}:</span>
-          <span>{data.text}</span>
+          <span>{data.content}</span>
         </div>
         {setData && <CloseOutlined onClick={() => setData(null)} />}
       </div>
